@@ -21,7 +21,15 @@
     "serve": "yarn build && cross-env NODE_ENV=production node --experimental-modules dist/server.js",
     "clean": "rimraf dist/",
     "copy-files": "copyfiles static/* dist/assets && copyfiles index.html dist",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "lint:fix": "eslint '*/**/*.{js,ts,tsx}' --fix",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "{*.ts,*.tsx,*.js}": "yarn lint:fix",
+    "**/*": [
+      "prettier --write --ignore-unknown"
+    ]
   },
   "dependencies": {
     "autoprefixer": "^10.4.2",
@@ -62,7 +70,9 @@
     "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.3.0",
+    "husky": "^7.0.4",
     "jest": "^27.5.1",
+    "lint-staged": "^12.3.4",
     "postcss": "8.4.6",
     "prettier": "^2.5.1",
     "rimraf": "^3.0.2",
