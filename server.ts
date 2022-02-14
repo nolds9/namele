@@ -3,7 +3,7 @@ import express, { Express, RequestHandler } from "express";
 import { createServer as createViteServer } from "vite";
 import serveStatic from "serve-static";
 import compression from "compression";
-import {getApi} from "./src/server/routes/api";
+import { getApi } from "./src/server/routes/api";
 import { ServerResponse } from "http";
 import { fileURLToPath } from "url";
 import { dirname, resolve } from "path";
@@ -13,10 +13,15 @@ const __dirname = dirname(__filename);
 
 const isTest = process.env.NODE_ENV === "test" || !!process.env.VITE_TEST_BUILD;
 
-const createServer = async (root = process.cwd(), isProd = process.env.NODE_ENV === "production") => {
+const createServer = async (
+  root = process.cwd(),
+  isProd = process.env.NODE_ENV === "production"
+) => {
   const localResolve = (p: string) => resolve(__dirname, p);
 
-  const indexProd = isProd ? fs.readFileSync(localResolve("./client/index.html"), "utf-8") : "";
+  const indexProd = isProd
+    ? fs.readFileSync(localResolve("./client/index.html"), "utf-8")
+    : "";
 
   const app: Express = express();
   app.use(express.json() as RequestHandler);
@@ -40,9 +45,12 @@ const createServer = async (root = process.cwd(), isProd = process.env.NODE_ENV 
     app.use(vite.middlewares);
   } else {
     app.use(compression());
-    const requestHandler = serveStatic<ServerResponse>(localResolve("./client"), {
-      index: false,
-    }) as RequestHandler;
+    const requestHandler = serveStatic<ServerResponse>(
+      localResolve("./client"),
+      {
+        index: false,
+      }
+    ) as RequestHandler;
     app.use(requestHandler);
   }
 
@@ -58,7 +66,8 @@ const createServer = async (root = process.cwd(), isProd = process.env.NODE_ENV 
         // always read fresh template in dev
         template = fs.readFileSync(localResolve("index.html"), "utf-8");
         template = await vite.transformIndexHtml(url, template);
-        render = (await vite.ssrLoadModule("/src/client/entry-server.tsx")).render;
+        render = (await vite.ssrLoadModule("/src/client/entry-server.tsx"))
+          .render;
       } else {
         template = indexProd;
         const entryServer = require("./server/entry-server.js");

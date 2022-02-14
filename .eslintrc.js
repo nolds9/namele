@@ -4,7 +4,12 @@ module.exports = {
     es2021: true,
     "jest/globals": true,
   },
-  extends: ["plugin:react/recommended", "standard", "prettier", "eslint:recommended"],
+  extends: [
+    "plugin:react/recommended",
+    "standard",
+    "prettier",
+    "eslint:recommended",
+  ],
   parser: "@typescript-eslint/parser",
   parserOptions: {
     ecmaFeatures: {

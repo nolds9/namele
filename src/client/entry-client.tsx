@@ -10,5 +10,5 @@ ReactDOM.hydrate(
       <App />
     </BrowserRouter>
   </React.StrictMode>,
-  document.getElementById("app"),
+  document.getElementById("app")
 );
