@@ -4,7 +4,7 @@ import { useGuesses } from "../hooks/guess";
 import { useSecretName } from "../hooks/name";
 import { Guess } from "./Guess";
 import { PastGuess } from "./PastGuess";
-const MAX_GUESSES = 6;
+import { MAX_GUESSES } from "../constants";
 
 export const Game = () => {
   const [gameState, dispatch] = useReducer(gameReducer, initialGameState);
@@ -19,12 +19,26 @@ export const Game = () => {
   const BlankWords = Array.from({ length: numBlankWords }).map((_, i) => (
     <Guess key={i} word={[]} />
   ));
+  const hasGuessedCorrect = !!gameState.pastGuesses.find(
+    (pg) => !!pg.isCorrect
+  );
+  const ifWonGame = gameState.isGameOver && hasGuessedCorrect;
+  const ifLostGame = gameState.isGameOver && !hasGuessedCorrect;
+
   return (
-    <div className="game">
-      {!numPastGuesses && <Guess word={gameState.currentGuess.guess} />}
-      {!!numPastGuesses && PastWords}
-      {!!numPastGuesses && <Guess word={gameState.currentGuess.guess} />}
-      {BlankWords}
-    </div>
+    <>
+      <div className="message">
+        {ifWonGame && <div>Congrats!</div>}
+        {ifLostGame && <div>Better luck next time!</div>}
+      </div>
+      <div className="game">
+        {!numPastGuesses && <Guess word={gameState.currentGuess.guess} />}
+        {!!numPastGuesses && PastWords}
+        {!!numPastGuesses && numPastGuesses !== MAX_GUESSES && (
+          <Guess word={gameState.currentGuess.guess} />
+        )}
+        {BlankWords}
+      </div>
+    </>
   );
 };

@@ -1,6 +1,7 @@
 import type { GameState, GameAction } from "../../types";
 import { GameActionType } from "../../types";
 import { checkGuess } from "../utils";
+import { MAX_GUESSES } from "../constants";
 
 export const initialGameState: GameState = {
   currentGuess: {
@@ -33,6 +34,9 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
           ...initialGameState.currentGuess,
         },
         pastGuesses: [...state.pastGuesses, updatedCurrentGuess],
+        isGameOver:
+          updatedCurrentGuess.isCorrect ||
+          state.pastGuesses.length + 1 === MAX_GUESSES,
       };
       break;
     }

@@ -14,11 +14,15 @@ export function useGuesses(state: GameState, dispatch: Dispatch<any>) {
         dispatch({ type: GameActionType.SET_LETTER, data: key });
       }
     }
-    window.addEventListener("keydown", handleKeydown);
+    if (!state.isGameOver) {
+      window.addEventListener("keydown", handleKeydown);
+    } else {
+      window.removeEventListener("keydown", handleKeydown);
+    }
     return () => {
       window.removeEventListener("keydown", handleKeydown);
     };
-  }, [state.currentGuess.guess.length, dispatch]);
+  }, [state.currentGuess.guess.length, dispatch, state.isGameOver]);
 
   return [state, dispatch];
 }
