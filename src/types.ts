@@ -2,11 +2,11 @@
 export enum LetterStatus {
   GREEN = "GREEN",
   YELLOW = "YELLOW",
-  GREY = "GREY",
+  GRAY = "GRAY",
 }
 
 export type CheckedGuessState = {
-  letter: "";
+  letter: string;
   status: LetterStatus;
 };
 
@@ -17,9 +17,10 @@ export type GuessState = {
 };
 
 export type GameState = {
-  currentGuess: GuessState;
+  currentGuess: GuessState & { isInvalidWord: boolean };
   pastGuesses: GuessState[];
   secretWord: string;
+  isGameOver: boolean;
 };
 
 export enum GameActionType {

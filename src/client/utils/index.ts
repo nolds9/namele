@@ -1,10 +1,27 @@
 import { LetterStatus } from "../../types";
 
 export function checkGuess(guess: string[], secretWord: string) {
-  // TODO: check guess
+  const checkedGuess = guess.map((letter: string, i: number) => {
+    let status;
+
+    if (!secretWord.includes(letter)) {
+      status = LetterStatus.GRAY;
+    } else if (secretWord[i] === letter) {
+      status = LetterStatus.GREEN;
+    } else {
+      status = LetterStatus.YELLOW;
+    }
+
+    return {
+      letter,
+      status,
+    };
+  });
+
   return {
-    isGameOver: true,
-    checkedGuess: [],
+    guess,
+    checkedGuess,
+    isCorrect: checkedGuess.every((ls) => ls.status === LetterStatus.GREEN),
   };
 }
 
@@ -16,8 +33,8 @@ export function getCharClassesByStatus(status: LetterStatus) {
   switch (status) {
     case LetterStatus.GREEN:
       return "bg-green-600";
-    case LetterStatus.GREY:
-      return "bg-grey-500";
+    case LetterStatus.GRAY:
+      return "bg-gray-500";
     case LetterStatus.YELLOW:
       return "bg-yellow-400";
     default:

@@ -2,7 +2,7 @@ import type { GameState, GameAction } from "../../types";
 import { GameActionType } from "../../types";
 import { checkGuess } from "../utils";
 
-export const initialGameState: any = {
+export const initialGameState: GameState = {
   currentGuess: {
     guess: [],
     checkedGuess: [],
@@ -15,31 +15,38 @@ export const initialGameState: any = {
 };
 
 export function gameReducer(state: GameState, action: GameAction): GameState {
-  console.log({ state, action });
+  console.log(action);
+  let nextState = state;
   switch (action.type) {
     case GameActionType.CHECK_GUESS: {
       const checkedGuess = checkGuess(
         state.currentGuess.guess,
         state.secretWord
       );
-      return {
+      const updatedCurrentGuess = {
+        ...state.currentGuess,
+        ...checkedGuess,
+      };
+      nextState = {
         ...state,
         currentGuess: {
-          ...state.currentGuess,
-          ...checkedGuess,
+          ...initialGameState.currentGuess,
         },
+        pastGuesses: [...state.pastGuesses, updatedCurrentGuess],
       };
+      break;
     }
     case GameActionType.SET_LETTER:
-      return {
+      nextState = {
         ...state,
         currentGuess: {
           ...state.currentGuess,
           guess: [...state.currentGuess.guess, action.data],
         },
       };
+      break;
     case GameActionType.DELETE_LETTER:
-      return {
+      nextState = {
         ...state,
         currentGuess: {
           ...state.currentGuess,
@@ -49,12 +56,16 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
           ),
         },
       };
+      break;
     case GameActionType.SET_SECRET_WORD:
-      return {
+      nextState = {
         ...state,
         secretWord: action.data,
       };
+      break;
     default:
       return state;
   }
+  console.log({ nextState });
+  return nextState;
 }
