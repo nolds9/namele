@@ -5,7 +5,10 @@ export const Footer = () => {
     <footer className={"justify-center items-center"}>
       &copy; {new Date().getFullYear()} -{" "}
       <a href={"https://github.com/nolds9"}>Nicholas Olds</a> -{" "}
-      <a className={"p-1"} href={"https://github.com/nolds9/namele"}>
+      <a
+        className={"p-1 caret-lime-600"}
+        href={"https://github.com/nolds9/namele"}
+      >
         Repo
       </a>
     </footer>
