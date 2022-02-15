@@ -1,33 +1,24 @@
-import { useState, useEffect } from "react";
+import { useEffect, Dispatch } from "react";
+import { GameActionType, GameState } from "../../types";
 
-export function useGuesses(secretWord: string) {
-  const [guesses, setGuesses] = useState<string[][]>([[], [], [], [], []]);
-  const [currentGuess, setCurrentGuess] = useState<string[]>([]);
-
+export function useGuesses(state: GameState, dispatch: Dispatch<any>) {
   useEffect(() => {
-    function handleEnter() {
-      // TODO: add game over logic
-      setGuesses((state) => [...state, currentGuess]);
-    }
-
     function handleKeydown(event: KeyboardEvent) {
       const { key } = event;
       const isSingleChar = /[a-zA-Z]/.test(key) && key.length === 1;
       if (key === "Backspace") {
-        setCurrentGuess((state) => state.slice(0, state.length - 1));
+        dispatch({ type: GameActionType.DELETE_LETTER });
       } else if (key === "Enter") {
-        return handleEnter();
-      } else if (currentGuess.length < 5 && isSingleChar) {
-        setCurrentGuess((state) => [...state, key]);
+        dispatch({ type: GameActionType.CHECK_GUESS });
+      } else if (state.currentGuess.guess.length < 5 && isSingleChar) {
+        dispatch({ type: GameActionType.SET_LETTER, data: key });
       }
     }
-
     window.addEventListener("keydown", handleKeydown);
-
     return () => {
       window.removeEventListener("keydown", handleKeydown);
     };
-  }, [currentGuess.length]);
+  }, [state.currentGuess.guess.length, dispatch]);
 
-  return { guesses, currentGuess };
+  return [state, dispatch];
 }

@@ -1,13 +1,12 @@
 import React from "react";
+import { getBaseCharClasses } from "../utils";
 
 type Props = {
   letter: string;
 };
 
+const baseClassNames = getBaseCharClasses();
+
 export const Char = ({ letter }: Props) => {
-  return (
-    <span className="border-2 w-16 h-16 m-1 flex justify-center items-center">
-      {letter}
-    </span>
-  );
+  return <span className={`${baseClassNames}`}>{letter}</span>;
 };
