@@ -28,6 +28,7 @@ export enum GameActionType {
   SET_LETTER = "SET_LETTER",
   DELETE_LETTER = "DELETE_LETTER",
   CHECK_GUESS = "CHECK_GUESS",
+  PLAY_AGAIN = "PLAY_AGAIN",
 }
 
 export type GameAction =
@@ -39,4 +40,5 @@ export type GameAction =
       type: GameActionType.CHECK_GUESS;
     }
   | { type: GameActionType.DELETE_LETTER }
-  | { type: GameActionType.SET_LETTER; data: string };
+  | { type: GameActionType.SET_LETTER; data: string }
+  | { type: GameActionType.PLAY_AGAIN };

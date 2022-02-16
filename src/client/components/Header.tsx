@@ -2,14 +2,10 @@ import React from "react";
 
 export const Header = () => {
   return (
-    <header>
-      <div className="menu-left"></div>
-      <div className="title">
-        <h2 className="font-bold text-gray-900 text-1xl lg:text-1xl text-center">
-          Namele
-        </h2>
-      </div>
-      <div className="menu-right"></div>
+    <header className="border-b-2 w-screen">
+      <h2 className="font-bold text-gray-900 text-6xl lg:text-6xl text-center pb-2">
+        Namele
+      </h2>
     </header>
   );
 };

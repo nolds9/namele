@@ -59,22 +59,20 @@ const createServer = async (
 
       let template;
       let render;
+      let appHtml;
       if (!isProd) {
         // always read fresh template in dev
         template = fs.readFileSync(localResolve("index.html"), "utf-8");
         template = await vite.transformIndexHtml(url, template);
         render = (await vite.ssrLoadModule("/src/client/entry-server.tsx"))
           .render;
+        appHtml = render(url);
       } else {
         template = indexProd;
-        const { default: entryServer } = await import(
-          // @ts-ignore
-          "./server/entry-server.js"
-        );
-        render = entryServer.render;
+        render = () => "";
       }
 
-      const appHtml = render(url);
+      appHtml = render(url);
 
       const html = template.replace(`<!--app-html-->`, appHtml);
 

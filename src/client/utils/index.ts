@@ -1,6 +1,15 @@
 import { LetterStatus } from "../../types";
-import allNames from "../data/names";
+import allowableNames from "../data/allowableNames";
 import { LOCAL_STORAGE_KEY } from "../constants";
+import allNames from "../data/names";
+
+export function capitalize(word: string) {
+  return `${word.slice(0, 1).toUpperCase()}${word.slice(1, word.length)}`;
+}
+
+export function validateName(guess: string[]) {
+  return allNames.includes(capitalize(guess.join("")));
+}
 
 export function checkGuess(guess: string[], secretWord: string) {
   const secretWordCharCount = secretWord.split("").reduce((acc, curr) => {
@@ -38,7 +47,7 @@ export function checkGuess(guess: string[], secretWord: string) {
 }
 
 export function getBaseCharClasses() {
-  return "border-2 w-16 h-16 m-1 flex justify-center items-center";
+  return "border-2 text-3xl w-24 h-24 m-1 flex justify-center items-center";
 }
 
 export function getCharClassesByStatus(status: LetterStatus) {
@@ -104,12 +113,17 @@ export const recordRandomName = (nameToRecord: string) => {
 
 export const getRandomName = (): string => {
   const usedNames = getUsedNames();
-  if (!allNames.length) {
+  if (!allowableNames.length) {
     throw Error("Out of names");
   }
-  const randomName = allNames[Math.floor(Math.random() * allNames.length)];
+  const randomName =
+    allowableNames[Math.floor(Math.random() * allowableNames.length)];
   if (!usedNames.includes(randomName)) {
     return randomName;
   }
   return getRandomName();
+};
+
+export const clearStoredName = () => {
+  localStorage.removeItem(LOCAL_STORAGE_KEY);
 };

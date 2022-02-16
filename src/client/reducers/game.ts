@@ -1,6 +1,6 @@
 import type { GameState, GameAction } from "../../types";
 import { GameActionType } from "../../types";
-import { checkGuess } from "../utils";
+import { checkGuess, validateName } from "../utils";
 import { MAX_GUESSES } from "../constants";
 
 export const initialGameState: GameState = {
@@ -16,10 +16,18 @@ export const initialGameState: GameState = {
 };
 
 export function gameReducer(state: GameState, action: GameAction): GameState {
-  console.log(action);
-  let nextState = state;
   switch (action.type) {
     case GameActionType.CHECK_GUESS: {
+      const isValidName = validateName(state.currentGuess.guess);
+      if (!isValidName) {
+        return {
+          ...state,
+          currentGuess: {
+            ...state.currentGuess,
+            isInvalidWord: true,
+          },
+        };
+      }
       const checkedGuess = checkGuess(
         state.currentGuess.guess,
         state.secretWord
@@ -28,7 +36,7 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
         ...state.currentGuess,
         ...checkedGuess,
       };
-      nextState = {
+      return {
         ...state,
         currentGuess: {
           ...initialGameState.currentGuess,
@@ -38,19 +46,18 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
           updatedCurrentGuess.isCorrect ||
           state.pastGuesses.length + 1 === MAX_GUESSES,
       };
-      break;
     }
     case GameActionType.SET_LETTER:
-      nextState = {
+      return {
         ...state,
         currentGuess: {
           ...state.currentGuess,
           guess: [...state.currentGuess.guess, action.data],
+          isInvalidWord: false,
         },
       };
-      break;
     case GameActionType.DELETE_LETTER:
-      nextState = {
+      return {
         ...state,
         currentGuess: {
           ...state.currentGuess,
@@ -58,18 +65,17 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
             0,
             state.currentGuess.guess.length - 1
           ),
+          isInvalidWord: false,
         },
       };
-      break;
     case GameActionType.SET_SECRET_WORD:
-      nextState = {
+      return {
         ...state,
         secretWord: action.data,
       };
-      break;
+    case GameActionType.PLAY_AGAIN:
+      return initialGameState;
     default:
       return state;
   }
-  console.log({ nextState });
-  return nextState;
 }
