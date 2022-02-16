@@ -1,15 +1,25 @@
 import { LetterStatus } from "../../types";
 
 export function checkGuess(guess: string[], secretWord: string) {
+  const secretWordCharCount = secretWord.split("").reduce((acc, curr) => {
+    if (Object.hasOwnProperty.call(acc, curr)) {
+      acc[curr] += 1;
+    } else {
+      acc[curr] = 1;
+    }
+    return acc;
+  }, {} as { [key: string]: number });
   const checkedGuess = guess.map((letter: string, i: number) => {
     let status;
 
-    if (!secretWord.includes(letter)) {
-      status = LetterStatus.GRAY;
-    } else if (secretWord[i] === letter) {
+    if (secretWord[i] === letter) {
       status = LetterStatus.GREEN;
-    } else {
+      secretWordCharCount[letter] -= 1;
+    } else if (secretWordCharCount[letter]) {
       status = LetterStatus.YELLOW;
+      secretWordCharCount[letter] -= 1;
+    } else {
+      status = LetterStatus.GRAY;
     }
 
     return {

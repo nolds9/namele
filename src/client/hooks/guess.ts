@@ -11,7 +11,7 @@ export function useGuesses(state: GameState, dispatch: Dispatch<any>) {
       } else if (key === "Enter") {
         dispatch({ type: GameActionType.CHECK_GUESS });
       } else if (state.currentGuess.guess.length < 5 && isSingleChar) {
-        dispatch({ type: GameActionType.SET_LETTER, data: key });
+        dispatch({ type: GameActionType.SET_LETTER, data: key.toLowerCase() });
       }
     }
     if (!state.isGameOver) {
