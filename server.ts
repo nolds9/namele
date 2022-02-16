@@ -67,7 +67,10 @@ const createServer = async (
           .render;
       } else {
         template = indexProd;
-        const entryServer = require("./server/entry-server.js");
+        const { default: entryServer } = await import(
+          // @ts-ignore
+          "./server/entry-server.js"
+        );
         render = entryServer.render;
       }
 
