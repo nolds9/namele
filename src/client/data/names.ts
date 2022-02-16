@@ -1,4 +1,4 @@
-[
+export default [
   "Aaden",
   "Aanya",
   "Aarav",
@@ -1686,5 +1686,5 @@
   "Maely",
   "Lyvia",
   "Maika",
-  "Leane"
-]
+  "Leane",
+];

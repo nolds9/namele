@@ -3,7 +3,6 @@ import express, { Express, RequestHandler } from "express";
 import { createServer as createViteServer } from "vite";
 import serveStatic from "serve-static";
 import compression from "compression";
-import { getApi } from "./src/server/routes/api";
 import { ServerResponse } from "http";
 import { fileURLToPath } from "url";
 import { dirname, resolve } from "path";
@@ -53,8 +52,6 @@ const createServer = async (
     ) as RequestHandler;
     app.use(requestHandler);
   }
-
-  app.use("/api", getApi);
 
   app.use("*", async ({ originalUrl }, res) => {
     try {

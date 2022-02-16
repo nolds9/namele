@@ -1,4 +1,6 @@
 import { LetterStatus } from "../../types";
+import allNames from "../data/names";
+import { LOCAL_STORAGE_KEY } from "../constants";
 
 export function checkGuess(guess: string[], secretWord: string) {
   const secretWordCharCount = secretWord.split("").reduce((acc, curr) => {
@@ -51,3 +53,63 @@ export function getCharClassesByStatus(status: LetterStatus) {
       return "";
   }
 }
+
+export const isToday = (someDateStr: string) => {
+  const someDate = new Date(someDateStr);
+  const today = new Date();
+  return (
+    someDate.getDate() === today.getDate() &&
+    someDate.getMonth() === today.getMonth() &&
+    someDate.getFullYear() === today.getFullYear()
+  );
+};
+
+export const getUsedNames = () => {
+  try {
+    const usedNamesData = localStorage.getItem(LOCAL_STORAGE_KEY);
+    if (usedNamesData) {
+      const usedNames = JSON.parse(usedNamesData);
+      return usedNames;
+    } else {
+      return [];
+    }
+  } catch (error) {
+    return [];
+  }
+};
+
+export const getCurrentName = () => {
+  const usedNames = getUsedNames();
+  return usedNames.find((un: { name: string; date: string }) =>
+    isToday(un.date)
+  );
+};
+
+export const recordRandomName = (nameToRecord: string) => {
+  const usedNames = getUsedNames();
+  const data = JSON.stringify(
+    [
+      ...usedNames,
+      {
+        name: nameToRecord,
+        date: new Date().toUTCString(),
+      },
+    ],
+    null,
+    2
+  );
+
+  localStorage.setItem(LOCAL_STORAGE_KEY, data);
+};
+
+export const getRandomName = (): string => {
+  const usedNames = getUsedNames();
+  if (!allNames.length) {
+    throw Error("Out of names");
+  }
+  const randomName = allNames[Math.floor(Math.random() * allNames.length)];
+  if (!usedNames.includes(randomName)) {
+    return randomName;
+  }
+  return getRandomName();
+};

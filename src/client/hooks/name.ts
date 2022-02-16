@@ -1,10 +1,23 @@
 import { Dispatch, useEffect } from "react";
 import { GameActionType } from "../../types";
+import { getCurrentName, getRandomName, recordRandomName } from "../utils";
 
 export function useSecretName(dispatch: Dispatch<any>) {
   useEffect(() => {
-    // TODO: fetch secret secretWord
+    const existingCurrentName = getCurrentName();
 
-    dispatch({ type: GameActionType.SET_SECRET_WORD, data: "helps" });
+    if (existingCurrentName && existingCurrentName.name) {
+      return dispatch({
+        type: GameActionType.SET_SECRET_WORD,
+        data: existingCurrentName.name.toLowerCase(),
+      });
+    }
+
+    const randomName = getRandomName();
+    recordRandomName(randomName);
+    dispatch({
+      type: GameActionType.SET_SECRET_WORD,
+      data: randomName.toLowerCase(),
+    });
   }, [dispatch]);
 }
