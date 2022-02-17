@@ -6,7 +6,12 @@ import { Guess } from "./Guess";
 import { PastGuess } from "./PastGuess";
 import { MAX_GUESSES } from "../constants";
 import { GameActionType } from "../../types";
-import { clearStoredName } from "../utils";
+import {
+  clearStoredName,
+  copyToClipboard,
+  getShareableContent,
+  getTodayFormatted,
+} from "../utils";
 
 export const Game = () => {
   const [gameState, dispatch] = useReducer(gameReducer, initialGameState);
@@ -33,6 +38,14 @@ export const Game = () => {
   const ifWonGame = gameState.isGameOver && hasGuessedCorrect;
   const ifLostGame = gameState.isGameOver && !hasGuessedCorrect;
 
+  async function handleShare() {
+    const shareable = getShareableContent(gameState.pastGuesses);
+    const text = `Namele ${getTodayFormatted()} ${
+      ifLostGame ? "X" : numPastGuesses
+    }/${MAX_GUESSES}\n${shareable}`;
+    await copyToClipboard(text);
+  }
+
   return (
     <>
       <div className="message text-2xl font-semibold">
@@ -45,15 +58,23 @@ export const Game = () => {
             {numPastGuesses === 1 ? "guess" : "guesses"}!
           </h4>
         )}
-        {ifLostGame && <h4>Better luck next time!</h4>}
+        {ifLostGame && (
+          <h4>Better luck next time! The answer was {gameState.secretWord}</h4>
+        )}
         {isInvalidGuess && <h4>Not a valid name, try again!</h4>}
         {gameState.isGameOver && (
           <div className="mt-6 flex justify-center items-center">
             <button
               onClick={handlePlayAgain}
-              className="px-6 py-2 text-blue-600 font-semibold border rounded-md border-blue-400 hover:text-white hover:bg-blue-600 hover:border-transparent"
+              className="px-4 py-2 text-white font-semibold border rounded-md border-black bg-black hover:text-black hover:bg-white hover:border-black"
             >
               Play again
+            </button>
+            <button
+              className="px-4 py-2 ml-4 text-black font-semibold border rounded-md border-black hover:text-white hover:bg-black hover:border-transparent"
+              onClick={handleShare}
+            >
+              Share
             </button>
           </div>
         )}

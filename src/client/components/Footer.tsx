@@ -6,7 +6,7 @@ export const Footer = () => {
       &copy; {new Date().getFullYear()} -{" "}
       <a href={"https://github.com/nolds9"}>Nicholas Olds</a> -{" "}
       <a
-        className={"p-1 caret-lime-600"}
+        className={"p-1 text-blue-600"}
         href={"https://github.com/nolds9/namele"}
       >
         Repo

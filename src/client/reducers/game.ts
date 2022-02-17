@@ -1,6 +1,6 @@
 import type { GameState, GameAction } from "../../types";
 import { GameActionType } from "../../types";
-import { checkGuess, validateName } from "../utils";
+import { checkGuess, getRandomName, validateName } from "../utils";
 import { MAX_GUESSES } from "../constants";
 
 export const initialGameState: GameState = {
@@ -73,8 +73,10 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
         ...state,
         secretWord: action.data,
       };
-    case GameActionType.PLAY_AGAIN:
-      return initialGameState;
+    case GameActionType.PLAY_AGAIN: {
+      const randomName = getRandomName();
+      return { ...initialGameState, secretWord: randomName };
+    }
     default:
       return state;
   }

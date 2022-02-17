@@ -1,4 +1,4 @@
-import { LetterStatus } from "../../types";
+import { LetterStatus, CheckedGuessState, GuessState } from "../../types";
 import allowableNames from "../data/allowableNames";
 import { LOCAL_STORAGE_KEY } from "../constants";
 import allNames from "../data/names";
@@ -119,7 +119,7 @@ export const getRandomName = (): string => {
   const randomName =
     allowableNames[Math.floor(Math.random() * allowableNames.length)];
   if (!usedNames.includes(randomName)) {
-    return randomName;
+    return randomName.toLowerCase();
   }
   return getRandomName();
 };
@@ -127,3 +127,40 @@ export const getRandomName = (): string => {
 export const clearStoredName = () => {
   localStorage.removeItem(LOCAL_STORAGE_KEY);
 };
+
+export function mapPastGussIntoEmoji(pastGuess: CheckedGuessState[]) {
+  return pastGuess
+    .map(({ status }) => {
+      switch (status) {
+        case LetterStatus.GRAY:
+          return "⬛";
+        case LetterStatus.GREEN:
+          return "🟩";
+        case LetterStatus.YELLOW:
+          return "🟨";
+        default:
+          return "";
+      }
+    })
+    .join("");
+}
+
+export function getShareableContent(pastGuesses: GuessState[]) {
+  const emojiGuesses = pastGuesses.map((pg) =>
+    mapPastGussIntoEmoji(pg.checkedGuess)
+  );
+
+  return emojiGuesses.join("\n");
+}
+
+export async function copyToClipboard(text: string) {
+  await navigator.clipboard.writeText(text);
+}
+
+export function getTodayFormatted() {
+  const today = new Date();
+  const day = `${today.getDate()}`;
+  const month = `${today.getMonth() + 1}`;
+  const year = `${today.getFullYear()}`;
+  return `${month}/${day}/${year.slice(2, year.length)}`;
+}
