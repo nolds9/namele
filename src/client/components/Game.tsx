@@ -12,6 +12,8 @@ import {
   getShareableContent,
   getTodayFormatted,
 } from "../utils";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const Game = () => {
   const [gameState, dispatch] = useReducer(gameReducer, initialGameState);
@@ -44,6 +46,7 @@ export const Game = () => {
       ifLostGame ? "X" : numPastGuesses
     }/${MAX_GUESSES}\n${shareable}`;
     await copyToClipboard(text);
+    toast.success("Copied to clipboard!", { theme: "colored" });
   }
 
   return (
@@ -66,18 +69,19 @@ export const Game = () => {
           <div className="mt-6 flex justify-center items-center">
             <button
               onClick={handlePlayAgain}
-              className="px-4 py-2 text-white font-semibold border rounded-md border-black bg-black hover:text-black hover:bg-white hover:border-black"
+              className="px-4 py-2 text-white font-semibold border rounded-md border-black bg-black hover:text-black hover:bg-white hover:border-black focus:bg-slate-500"
             >
               Play again
             </button>
             <button
-              className="px-4 py-2 ml-4 text-black font-semibold border rounded-md border-black hover:text-white hover:bg-black hover:border-transparent"
+              className="px-4 py-2 ml-4 text-black font-semibold border rounded-md border-black hover:text-white hover:bg-black hover:border-transparent focus:bg-slate-500"
               onClick={handleShare}
             >
               Share
             </button>
           </div>
         )}
+        <ToastContainer autoClose={2000} hideProgressBar={true} closeOnClick />
       </div>
       <div className="game">
         {!numPastGuesses && (
