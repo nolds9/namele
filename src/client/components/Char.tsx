@@ -13,7 +13,7 @@ export const Char = ({ letter, isInvalidName }: Props) => {
     <span
       className={`${baseClassNames} ${isInvalidName ? "border-red-600" : ""}`}
     >
-      {letter}
+      {letter.toUpperCase()}
     </span>
   );
 };

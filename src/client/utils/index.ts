@@ -7,6 +7,10 @@ export function capitalize(word: string) {
   return `${word.slice(0, 1).toUpperCase()}${word.slice(1, word.length)}`;
 }
 
+export function flatten(arr: any[] = []) {
+  return arr.reduce((acc, curr) => acc.concat(curr), []);
+}
+
 export function validateName(guess: string[]) {
   return allNames.includes(capitalize(guess.join("")));
 }
@@ -47,7 +51,7 @@ export function checkGuess(guess: string[], secretWord: string) {
 }
 
 export function getBaseCharClasses() {
-  return "border-2 text-3xl w-24 h-24 m-1 flex justify-center items-center";
+  return "border-2 font-bold text-3xl w-20 h-20 m-1 flex justify-center items-center";
 }
 
 export function getCharClassesByStatus(status: LetterStatus) {

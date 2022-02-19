@@ -14,6 +14,7 @@ import {
 } from "../utils";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Keyboard } from "./Keyboard";
 
 export const Game = () => {
   const [gameState, dispatch] = useReducer(gameReducer, initialGameState);
@@ -98,6 +99,9 @@ export const Game = () => {
           />
         )}
         {BlankWords}
+      </div>
+      <div className="keyboard">
+        <Keyboard pastGuesses={gameState.pastGuesses} dispatch={dispatch} />
       </div>
     </>
   );

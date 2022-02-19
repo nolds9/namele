@@ -11,11 +11,11 @@ const baseClassNames = getBaseCharClasses();
 export const PastChar = ({ letterStatus }: Props) => {
   return (
     <span
-      className={`${baseClassNames} ${getCharClassesByStatus(
+      className={`${baseClassNames} text-white ${getCharClassesByStatus(
         letterStatus.status
       )}`}
     >
-      {letterStatus.letter}
+      {letterStatus.letter.toUpperCase()}
     </span>
   );
 };
