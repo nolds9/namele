@@ -51,7 +51,7 @@ export function checkGuess(guess: string[], secretWord: string) {
 }
 
 export function getBaseCharClasses() {
-  return "border-2 font-bold text-3xl w-20 h-20 m-1 flex justify-center items-center";
+  return "md:w-20 md:h-20 border-2 font-bold text-3xl w-14 h-14 m-1 flex justify-center items-center";
 }
 
 export function getCharClassesByStatus(status: LetterStatus) {

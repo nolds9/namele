@@ -52,7 +52,7 @@ export const Game = () => {
 
   return (
     <>
-      <div className="message text-2xl font-semibold">
+      <div className="message text-md font-semibold sm:text-2xl">
         {!gameState.currentGuess.guess.length && !numPastGuesses && (
           <h4>Wordle, but with names. Guess a name to get started!</h4>
         )}
