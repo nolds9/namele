@@ -32,9 +32,9 @@ export const Key = ({ letter, status, dispatch }: Props) => {
     <>
       <button
         onClick={() => dispatch(getAction(letter))}
-        className={`md:w-16 md:h-16 md:text-2xl ${
+        className={`sm:w-16 sm:h-16 md:w-16 md:h-16 sm:text-2xl ${
           status ? "text-white" : ""
-        } text-md font-bold w-12 h-12 flex mb-2 mr-2 justify-center items-center rounded-md cursor-pointer flex-1 ${getKeyBackground(
+        } text-md font-bold w-18 h-14 flex mb-2 mr-2 justify-center items-center rounded-md cursor-pointer flex-1 ${getKeyBackground(
           status
         )}`}
       >
